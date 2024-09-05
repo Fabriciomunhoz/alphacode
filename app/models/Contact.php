@@ -24,29 +24,23 @@ class Contact
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Verificar se o resultado é válido e retornar o próximo ID
+    
         if ($result && isset($result['max_id'])) {
             return $result['max_id'] + 1;
         }
 
-        // Se não houver IDs na tabela, começamos com 1
+
         return 1;
     }
 
 
 
-    // Método para adicionar um novo contato
     public function addContact($data)
     {
-        // Define valores padrão
         $data['celular_possui_whatsapp'] = isset($data['celular_possui_whatsapp']) ? true : false;
         $data['notificacao_email'] = isset($data['notificacao_email']) ? true : false;
-        $data['notificacao_sms'] = isset($data['notificacao_sms']) ? true : false;
-
-        // Obtemos o próximo ID
+        $data['notificacao_sms'] = isset($data['notificacao_sms']) ? true : 
         $nextId = $this->getNextId();
-
-        // A consulta inclui a coluna id manualmente
         $query = "INSERT INTO cadastro (id, nome_completo, data_nascimento, email, profissao, telefone, celular, celular_possui_whatsapp, notificacao_email, notificacao_sms) 
               VALUES (:id, :nome_completo, :data_nascimento, :email, :profissao, :telefone, :celular, :celular_possui_whatsapp, :notificacao_email, :notificacao_sms)";
         $stmt = $this->db->prepare($query);
